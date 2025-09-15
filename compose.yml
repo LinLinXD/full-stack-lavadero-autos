@@ -1,0 +1,24 @@
+services:
+  backend-lavadero:
+    build: ./backend
+    image: lavadero-img:latest
+    container_name: lavadero-back-app
+    volumes:
+      - ./backend:/app:ro
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    env_file: 
+      - ./backend/.env
+    command: npm run dev
+  database-lavadero: 
+    image: mongo:latest
+    container_name: lavadero-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - "lavadero_volume:/data/db"
+
+volumes:
+  lavadero_volume:
+

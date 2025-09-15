@@ -1,0 +1,17 @@
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build output
+dist/
+build/
+
+# Environment
+.env
+*.env
+
+# Docker
+*.pid
+*.log
+docker-data/
