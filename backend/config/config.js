@@ -5,7 +5,8 @@ const createConfig = () => {
     const envVarsSchema = Joi.object().keys({
         PORT: Joi.number().default(3000).description('Puerto del servidor'),
         SECRET: Joi.string().description('Secret del jwt'),
-        MONGODB_URL: Joi.string()
+        MONGODB_URL: Joi.string(),
+        SALT: Joi.number()
     }).unknown();
 
     const {value: envVars, error} = envVarsSchema
@@ -19,7 +20,8 @@ const createConfig = () => {
     return {
         port: envVars.PORT,
         secret: envVars.SECRET,
-        mongodb_url: envVars.MONGODB_URL
+        mongodb_url: envVars.MONGODB_URL,
+        salt: envVars.SALT
     }
 
 }
