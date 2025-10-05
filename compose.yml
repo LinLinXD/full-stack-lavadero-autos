@@ -1,7 +1,7 @@
 services:
   backend-lavadero:
     build: ./backend
-    image: lavadero-img:latest
+    image: lavadero-back:latest
     container_name: lavadero-back-app
     volumes:
       - ./backend:/app:ro
@@ -15,6 +15,7 @@ services:
       - database-lavadero
   frontend-lavadero:
     build: ./frontend
+    image: lavadero-front:latest
     container_name: lavadero-front
     volumes:
       - ./frontend:/app
@@ -26,16 +27,21 @@ services:
       - backend-lavadero
     environment:
       - CHOKIDAR_USEPOLLING=true
-      - CHOKIDAR_INTERVAL=300        
+      - CHOKIDAR_INTERVAL=300 
   
   database-lavadero: 
     image: mongo:latest
     container_name: lavadero-mongo
     ports:
       - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=lavadero-db
+
     volumes:
       - "lavadero_volume:/data/db"
-  
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    env_file: 
+      - ./backend/.env
 
 volumes:
   lavadero_volume:
