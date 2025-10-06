@@ -1,8 +1,15 @@
 import {Schema} from "mongoose";
 
 const reservaSchema = Schema({
-    id_servicio: {type: String, required: true, unique: true},
-    id_usuario: {type: String, required: true},
+    id_servicio: {
+        type: Schema.Types.ObjectId,
+        ref: "Servicios",
+        required: true
+    },
+    id_usuario: {
+        type: Schema.Types.ObjectId,
+        ref: "Usuarios"
+    },
     id_vehiculo: {type: String, required: true},
     estado: {
         type: String,

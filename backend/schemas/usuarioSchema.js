@@ -6,7 +6,8 @@ const usuarioSchema = Schema({
     email: {type: String, required: true, unique: true},
     rol: {
         type: String,
-        enum: ["user", "admin"]
+        enum: ["user", "admin"],
+        default: "user"
     }
 })
 
