@@ -9,4 +9,12 @@ export const registerUserSchema = {
     }).unknown(false)
 }
 
+export const loginUserSchema = {
+    body: Joi.object().keys({
+        email: Joi.string(),
+        password: Joi.string(),
+    }).unknown(false)
+}
+
+
 

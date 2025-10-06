@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import HttpError from '../errors/httpError.js';
-
+import { generateJwt } from '../utils/jwtUtils.js';
 
 class UserService {
     constructor (userModel){
@@ -25,7 +25,27 @@ class UserService {
         }
     }
 
+    async login (userInfo) {
+        const {email, password} = userInfo
+
+        const user = await this.userModel.findOne({email})
+
+        if(!user) {
+            throw new HttpError('Email or password is not valid')
+        }
+
+        const isValidPassword = await bcrypt.compare(password, user.password)
+
+        if(!isValidPassword) {
+            throw new HttpError('Email or password is not valid')
+        }
+
+        const token = generateJwt(user)
+        
+        return {token, user};
+    }
 
 }
 
 export default UserService
+
