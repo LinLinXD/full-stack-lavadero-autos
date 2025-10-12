@@ -1,7 +1,6 @@
 import UserService from "../services/userService.js"
 import userModel from "../models/userModel.js"
 import createConfig from "../config/config.js"
-import HttpError from "../errors/httpError.js"
 
 const { salt } = createConfig()
 
