@@ -1,7 +1,6 @@
 import UserService from "../services/userService.js"
 import userModel from "../models/userModel.js"
 import createConfig from "../config/config.js"
-import HttpError from "../errors/httpError.js"
 
 const { salt } = createConfig()
 
@@ -15,6 +14,7 @@ class UserController {
     async register (req, res, next) {
         try{
             const userInfo = req.body;
+
             const user = await userService.register(userInfo, salt);
 
             return res.status(201).json({success: true, payload: {user}});
@@ -37,9 +37,13 @@ class UserController {
                 })
                 .status(200)
                 .json({
-                    id: user.id,
-                    username: user.username,
-                    email: user.email
+                    success: true,
+                    message: "El usuario fue creado exitosamente",
+                    payload: {
+                        id: user.id,
+                        username: user.username,
+                        email: user.email
+                    }
                 })
 
 
