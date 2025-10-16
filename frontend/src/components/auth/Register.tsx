@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import type { ActionsType } from '../../App'
 import { Button } from '../utils/Button'
-import WrongPassWordPopUp from '../utils/WrongPassWordPopUp'
+import PopUp from '../utils/PopUp.tsx'
 
 type RegisterType = { 
   appDispatch: React.Dispatch<ActionsType>
@@ -14,6 +14,8 @@ export const Register = ({appDispatch}:RegisterType) => {
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')  
   const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('')
+  const [popupType, setPopupType] = useState<'error' | 'alert' | 'success'>('error')
 
   const onValueChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setter(e.target.value)
@@ -22,6 +24,8 @@ export const Register = ({appDispatch}:RegisterType) => {
   const handleCheck = () => {
     if (password !== passwordConfirm) {
       setShowPopup(true);
+      setPopupType('error');
+      setPopupMessage('Las contraseñas no coinciden');
       return false;
     }
     setShowPopup(false);
@@ -29,57 +33,88 @@ export const Register = ({appDispatch}:RegisterType) => {
   }
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  e.preventDefault()
 
-    // llamar a handleCheck antes de continuar
-    if (!handleCheck()) return
-    try {
-      const res = await fetch('http://localhost:3000/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username: username,
-          email: email,
-          password: password
-        }),
-      })
+  // llamar a handleCheck antes de continuar
+  if (!handleCheck()) return
 
-      // Try to parse JSON when possible, otherwise capture text
-      let data: any = null
-      const contentType = res.headers.get('content-type') || ''
-      if (contentType.includes('application/json')) {
-        try {
-          data = await res.json()
-        } catch (parseErr) {
-          data = { message: 'Failed to parse JSON response', raw: await res.text() }
-        }
-      } else {
-        data = { message: await res.text() }
+  try {
+    const res = await fetch('http://localhost:3000/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: username,
+        email: email,
+        password: password
+      }),
+    })
+
+    // Intentar parsear JSON cuando corresponda, si no usar texto
+    let data: any = null
+    const contentType = res.headers.get('content-type') || ''
+    if (contentType.includes('application/json')) {
+      try {
+        data = await res.json()
+      } catch (parseErr) {
+        data = { message: 'Failed to parse JSON response', raw: await res.text() }
       }
-
-      // Log helpful debug info so we can see server problems in DevTools
-      if (!res.ok) {
-        console.groupCollapsed(`Register failed — ${res.status} ${res.statusText}`)
-        console.error('HTTP status:', res.status)
-        console.error('Status text:', res.statusText)
-        console.error('Response body:', data)
-        // server returns { message, errorType }
-        if (data && data.message) console.error('message:', data.message)
-        if (data && data.errorType) console.error('errorType:', data.errorType)
-        // fallback for older error field names
-        if (data && data.error) console.error('error:', data.error)
-        console.groupEnd()
-        return
-      }
-
-      console.log('User created correctly', data)
-    } catch (err) {
-      // Network or other unexpected error
-      console.error('Network or unexpected error during registration:', err)
+    } else {
+      data = { message: await res.text() }
     }
+
+    // Loguear para debugging
+    if (!res.ok) {
+      console.groupCollapsed(`Register failed — ${res.status} ${res.statusText}`)
+      console.error('HTTP status:', res.status)
+      console.error('Status text:', res.statusText)
+      console.error('Response body:', data)
+      console.groupEnd()
+
+      switch (data.errorType) {
+        case 'used-username':
+          setShowPopup(true);
+          setPopupType('alert');
+          setPopupMessage('El nombre de usuario ya está en uso');
+          break;
+        case 'used-email':
+          setShowPopup(true);
+          setPopupType('alert');
+          setPopupMessage('El correo electrónico ya está en uso');
+          break;
+        case 'invalid-data':
+          setShowPopup(true);
+          setPopupType('alert');
+          setPopupMessage('Datos inválidos');
+          break;
+        case 'unknown-error':
+          if (data.message == "\"password\" length must be at least 6 characters long"){
+            setShowPopup(true);
+            setPopupType('error');
+            setPopupMessage('La contraseña debe tener al menos 6 caracteres');
+          }else{
+            setShowPopup(true);
+            setPopupType('error');
+            setPopupMessage('El correo que ingresaste no es valido');
+          }
+          break;
+        default:
+          setShowPopup(true);
+          setPopupType('error');
+          setPopupMessage('Este PopUp no deberia Aparecer NUNCA');
+      }
+
+      return
+    }
+
+    console.log('User created correctly', data)
+    setShowPopup(true);
+    setPopupType('success');
+    setPopupMessage('Usuario creado correctamente');
+  } catch (err) {
+    // Error de red u otro inesperado
+    console.error('Network or unexpected error during registration:', err)
   }
+}
 
   const toggleLogin = () => appDispatch({ type: 'register' })
 
@@ -150,15 +185,14 @@ export const Register = ({appDispatch}:RegisterType) => {
         </p>
 
         {/* Pop-up renderizado dentro del contenedor blanco y posicionado absolute */}
-        <WrongPassWordPopUp
+        <PopUp
           isOpen={showPopup}
           onClose={() => setShowPopup(false)}
-          message="Las contraseñas no coinciden"
+          message={popupMessage}
           inline={true}
-          variant="error"
+          variant={popupType}
         />
       </div>
     </div>
   )
 }
-// ...existing code...
