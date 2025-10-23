@@ -38,6 +38,20 @@ export const Register = ({appDispatch}:RegisterType) => {
   // llamar a handleCheck antes de continuar
   if (!handleCheck()) return
 
+  if(!validateEmail(email)){
+    setShowPopup(true);
+    setPopupType('alert');
+    setPopupMessage('El correo electrónico ingresado no es válido');
+    return;
+  }
+
+  if(!validatePassword(password)){
+    setShowPopup(true);
+    setPopupType('alert');
+    setPopupMessage('La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una minúscula y un número');
+    return; 
+  }
+  
   try {
     const res = await fetch('http://localhost:3000/auth/register', {
       method: 'POST',
@@ -61,6 +75,8 @@ export const Register = ({appDispatch}:RegisterType) => {
     } else {
       data = { message: await res.text() }
     }
+
+
 
     // Loguear para debugging
     if (!res.ok) {
@@ -195,4 +211,15 @@ export const Register = ({appDispatch}:RegisterType) => {
       </div>
     </div>
   )
+}
+
+
+function validateEmail(email: string){
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return regex.test(email);
+}
+
+function validatePassword(password: string) {
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+  return regex.test(password);
 }
