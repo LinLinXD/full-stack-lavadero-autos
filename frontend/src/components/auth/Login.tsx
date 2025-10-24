@@ -46,7 +46,7 @@ export const Login = ({ appDispatch }: LoginType) => {
   const toggleLogin = () => appDispatch({ type: 'login' })
 
   return (
-    <div className="fixed inset-0 bg-black opacity-75 flex items-center justify-center z-50 ">
+    <div className="fixed inset-0 bg-black/75 flex items-center justify-center z-50 ">
       
       <div className="flex flex-col  justify-center bg-white rounded-2xl shadow-2xl w-100 p-10 relative h-120">
         <Button 
