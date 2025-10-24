@@ -6,7 +6,7 @@ const db = db.getSiblingDB(dbName);
 db.servicios.insertMany([
   // ---- Lavados ----
   { nombre: "Lavado Basico", categoria: "lavado", descripcion: "Lavado exterior con agua y jabón, sin encerado.", costo: 15000, duracion: 20, excluye: ["Lavado Premium", "Lavado Completo"], url: 'https://i.postimg.cc/Gp3hdPvv/lavado-basico.jpg' },
-  { nombre: "lavado premium", categoria: "lavado", descripcion: "Lavado exterior + secado detallado + brillo en llantas.", costo: 30000, duracion: 45, excluye: ["Lavado Basico", "Lavado Completo"], url: 'https://i.postimg.cc/L53b9Pt9/lavado-premium.jpg'},
+  { nombre: "Lavado Premium", categoria: "lavado", descripcion: "Lavado exterior + secado detallado + brillo en llantas.", costo: 30000, duracion: 45, excluye: ["Lavado Basico", "Lavado Completo"], url: 'https://i.postimg.cc/L53b9Pt9/lavado-premium.jpg'},
   { nombre: "Lavado Completo", categoria: "lavado", descripcion: "Lavado exterior e interior, incluye aspirado y limpieza básica de tapicería.", costo: 40000, duracion: 60, excluye: ["Lavado Basico", "Lavado Premium", "Aspirado interior"], url: 'https://i.postimg.cc/6pgYNckR/lavado-completo.jpg'},
 
   // ---- Interior ----
