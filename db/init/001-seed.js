@@ -15,9 +15,9 @@ db.servicios.insertMany([
   { nombre: "Limpieza Interior Premium", categoria: "interior", descripcion: "Limpieza completa de interior con tapicería, plásticos y aspirado profundo.", costo: 35000, duracion: 60, excluye: ["Aspirado Interior", "Limpieza Tapiceria"], url: 'https://i.postimg.cc/52dXdFPg/limpieza-interior-premium.jpg' },
 
   // ---- Tratamientos especiales ----
-  { nombre: "Encerado", categoria: "tratamientoEspecial", descripcion: "Aplicación de cera protectora para pintura.", costo: 20000, duracion: 30, excluye: ["Pulida"], url: 'https://i.postimg.cc/d1HFqzwx/encerado.jpg' },
-  { nombre: "Pulida", categoria: "tratamientoEspecial", descripcion: "Pulido completo de la pintura, incluye encerado final.", costo: 80000, duracion: 120, excluye: ["Encerado"], url: 'https://i.postimg.cc/5NwCt3Qr/pulida.png'},
-  { nombre: "Lavado Motor", categoria: "tratamientoEspecial", descripcion: "Limpieza de compartimento del motor con productos especiales.", costo: 30000, duracion: 40, url: 'https://i.postimg.cc/tR61r5kC/lavado-motor.jpg'},
+  { nombre: "Encerado", categoria: "tratamiento especial", descripcion: "Aplicación de cera protectora para pintura.", costo: 20000, duracion: 30, excluye: ["Pulida"], url: 'https://i.postimg.cc/d1HFqzwx/encerado.jpg' },
+  { nombre: "Pulida", categoria: "tratamiento especial", descripcion: "Pulido completo de la pintura, incluye encerado final.", costo: 80000, duracion: 120, excluye: ["Encerado"], url: 'https://i.postimg.cc/5NwCt3Qr/pulida.png'},
+  { nombre: "Lavado Motor", categoria: "tratamiento especial", descripcion: "Limpieza de compartimento del motor con productos especiales.", costo: 30000, duracion: 40, url: 'https://i.postimg.cc/tR61r5kC/lavado-motor.jpg'},
 
   // ---- Extras ----
   { nombre: "Brillo Llantas", categoria: "extra", descripcion: "Aplicación de silicona para brillo y protección de llantas.", costo: 5000, duracion: 10, url: 'https://i.postimg.cc/SRnhjDxH/brillo-llantas.jpg'},
