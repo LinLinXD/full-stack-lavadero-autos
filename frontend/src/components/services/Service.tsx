@@ -1,6 +1,11 @@
+import ServiceForm from "./ServiceForm/ServiceForm";
 
 export const Service = () => {
   return (
-    <div>Service</div>
+    <div>
+      <ServiceForm></ServiceForm>
+    </div>
   )
 }
+
+export default Service
