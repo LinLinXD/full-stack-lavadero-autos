@@ -4,6 +4,7 @@ import errorHandler from './middlewares/errorHandler.js';
 import userRouter from './routes/user.routes.js';
 import reservationRouter from './routes/reserva.routes.js';
 import cookieParser from 'cookie-parser';
+import serviceRouter from './routes/service.routes.js';
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(cookieParser())
 
 app.use('/auth', userRouter)
 app.use('/reservation', reservationRouter)
+app.use('/service', serviceRouter)
 
 app.use(errorHandler)
 
