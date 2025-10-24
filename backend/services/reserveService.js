@@ -29,6 +29,11 @@ class ReservationService {
         .find({ nombre: { $in: servicios } }, "_id") 
         .lean();
 
+        if(docs.length < 1){
+            throw new HttpError('No se seleccionó ningún servicio', 400, 'bad-request')
+        }
+
+
         const  idServicios = docs.map(d => d._id)
 
         const newReservation = await this.reservationModel.create({
