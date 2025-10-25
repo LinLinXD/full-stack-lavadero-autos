@@ -9,6 +9,8 @@ export interface Service {
   costo: string;
   duracion: number;
   excluye: string[];
+  categoria: string;
+  url?: string;
 }
 
 // 🧩 Definimos qué contendrá el contexto global
@@ -62,6 +64,8 @@ const StoreContextProvider = ({ children }: { children: ReactNode }) => {
           costo: s.costo?.toString() ?? "0",
           duracion: s.duracion ?? 0,
           excluye: s.excluye ?? [],
+          categoria: s.categoria || "Otros",
+          url: s.url ?? "",
         }));
 
         setServices(formatted);
