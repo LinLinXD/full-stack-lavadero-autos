@@ -45,13 +45,11 @@ export const Login = ({ appDispatch }: LoginType) => {
         setPopupType('error');
         setPopupMessage('Correo o contraseña incorrecta,revise e intente de nuevo');
     } else {
-      const userInfo = await loginFetch.json()
-<<<<<<< HEAD
-      appDispatch({type: 'user', payload: userInfo.payload})
+      const userData = await loginFetch.json() 
+
+      appDispatch({type: 'user', payload: userData.payload})
       appDispatch({type: 'login'})
-=======
-      appDispatch({type: 'user', payload: userInfo})
-      // show success popup, then close popup and the login modal
+      
       setPopupType('success')
       setPopupMessage('Inicio de sesión exitoso')
       setShowPopup(true)
@@ -62,7 +60,6 @@ export const Login = ({ appDispatch }: LoginType) => {
         setShowPopup(false)
         appDispatch({type: 'login'})
       }, 1400)
->>>>>>> origin/login-register
     }
   }
 
