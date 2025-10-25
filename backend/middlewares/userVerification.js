@@ -2,30 +2,23 @@ import HttpError from "../errors/httpError.js"
 import jwt from 'jsonwebtoken'
 import createConfig from "../config/config.js"
 
-const authVerification = (req, res, next) => {
+const userVerification = (req, res, next) => {
     const {secret} = createConfig();
 
     try{
         const token = req.cookies.access_token
-        req.user = { userInfo: null }
+        req.user = undefined
 
-        if(!token) {
-            throw new HttpError('Tiene permisos insuficientes', 401)
-        }
-
-        try{
+        if(token) {
             const data = jwt.verify(token, secret)
             req.user = {
                 id: data.id,
                 username: data.username,
-                email: data.email,
+                email: data.email, 
                 rol: data.rol,
             }
-        } catch (err) {
-            throw new HttpError('Token invalido o expirado', 401)
         }
 
- 
         next()
     } catch(err) {
         next(err)
@@ -33,4 +26,4 @@ const authVerification = (req, res, next) => {
 
 }
 
-export default authVerification
+export default userVerification

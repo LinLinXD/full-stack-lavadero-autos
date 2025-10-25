@@ -33,7 +33,6 @@ class ReservationService {
             throw new HttpError('No se seleccionó ningún servicio', 400, 'bad-request')
         }
 
-
         const  idServicios = docs.map(d => d._id)
 
         const newReservation = await this.reservationModel.create({
@@ -65,7 +64,7 @@ class ReservationService {
             return this.reservationModel
             .find({})
             .populate({ path: 'id_usuario', select: 'username email' })
-            .populate({ path: 'id_servicio', select: 'nombre precio' })
+            .populate({ path: 'id_servicio', select: 'nombre costo' })
             .lean();
         }
 
@@ -97,7 +96,7 @@ class ReservationService {
             .populate({
                 path: 'id_servicio',
                 match: isSet(servicio) ? { nombre: servicio } : undefined,
-                select: 'nombre precio',
+                select: 'nombre costo',
             })
             .lean();
 
