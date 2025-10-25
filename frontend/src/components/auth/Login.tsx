@@ -38,7 +38,7 @@ export const Login = ({ appDispatch }: LoginType) => {
         console.error("Something went wrong")
     } else {
       const userInfo = await loginFetch.json()
-      appDispatch({type: 'user', payload: userInfo})
+      appDispatch({type: 'user', payload: userInfo.payload})
       appDispatch({type: 'login'})
     }
   }

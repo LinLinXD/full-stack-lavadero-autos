@@ -1,6 +1,8 @@
 
 export const Admin = () => {
   return (
-    <div>Admin</div>
+    <>
+      <h1>Admin</h1>
+    </>
   )
 }
