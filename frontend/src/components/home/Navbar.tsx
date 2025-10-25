@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 import logo from '../../assets/navbar-imgs/logo.png'
 import { Button } from '../utils/Button'
 import type { ActionsType } from '../../App'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../context/authContext'
 
 type NavbarType = {
@@ -11,6 +11,18 @@ type NavbarType = {
 
 export const Navbar = ({appDispatch}: NavbarType) => {
   const {isLoggedIn, userInfo} = useContext(AuthContext)
+  const [isAdmin, setAdmin] = useState(false)
+
+  useEffect(() => {
+    if(userInfo?.rol?.includes('admin')){
+      setAdmin(true)
+    } else {
+      setAdmin(false)
+    }
+
+    console.log(isAdmin);
+  }, [userInfo])
+
   const toggleLogin = () => {
     appDispatch({ type: 'login' })
   }
@@ -48,24 +60,29 @@ export const Navbar = ({appDispatch}: NavbarType) => {
             Home
           </NavLink>
         </li>
-        
-        <li>
-          <NavLink 
-          to="/services" 
-          className={({isActive}) => isActive ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1" : "hover:text-gray-200"}
-          >
-            Services
-          </NavLink>
-        </li>
-
-        <li>
-          <NavLink 
-            to="/admin" 
+        {userInfo &&
+          <li>
+            <NavLink 
+            to="/services" 
             className={({isActive}) => isActive ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1" : "hover:text-gray-200"}
-          >
-            Admin
-          </NavLink>
-        </li>
+            >
+              Services
+            </NavLink>
+          </li>
+        }
+
+        {userInfo && isAdmin &&
+
+          <li>
+            <NavLink 
+              to="/admin" 
+              className={({isActive}) => isActive ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1" : "hover:text-gray-200"}
+            >
+              Admin
+            </NavLink>
+          </li>
+        }
+
 
         {
           !isLoggedIn && <li>
