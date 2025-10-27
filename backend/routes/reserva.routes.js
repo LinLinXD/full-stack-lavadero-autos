@@ -9,6 +9,7 @@ const reservationController = new ReservationController();
 
 reservationRouter.post('/create', authVerification, reservationController.createReservation)
 reservationRouter.get('/my-reservations', authVerification, reservationController.getAllUserReservations)
-reservationRouter.post('/filter-reservations', validate(filterScheme), reservationController.filterReservations)
+reservationRouter.post('/filter-reservations', authVerification, validate(filterScheme), reservationController.filterReservations)
+reservationRouter.patch('/cancel-reservation/:id', authVerification, reservationController.cancelReservation)
 
 export default reservationRouter

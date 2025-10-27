@@ -47,7 +47,8 @@ class ReservationService {
     }
 
     async getAllUserReservations(id) {
-        const reservations = await this.reservationModel.find({id_usuario: id});
+        const reservations = await this.reservationModel.find({id_usuario: id})
+            .populate({ path: 'id_servicio', select: 'nombre costo' });
 
         if(!reservations){
             throw new HttpError("El id proporcionado no existe", 400)
@@ -108,6 +109,24 @@ class ReservationService {
         }
 
         return reservas;
+        }
+
+        async cancelReservation(reservationId){
+  
+            const isValidReservation = await this.reservationModel.findOne({_id: reservationId})
+                
+            if(!isValidReservation){
+                throw new HttpError('No se ha encontrado ninguna reservación', 400, 'not-found')
+            }
+
+            if(isValidReservation.estado !== 'cancelado'){
+                const reservaCancelada = await this.reservationModel.findByIdAndUpdate(reservationId, {estado: 'cancelado'}, {new: true})
+                return reservaCancelada;
+            } else {
+                throw new HttpError('La reservación no se encuentra activa')
+            }
+
+
         }
 
     }
