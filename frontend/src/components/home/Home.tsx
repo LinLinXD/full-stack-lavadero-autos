@@ -3,8 +3,10 @@ import { useState } from 'react'
 import bcimage from '../../assets/home-imgs/bcimage.jpeg'
 import service1 from '../../assets/home-imgs/service1.jpg'
 import service2 from '../../assets/home-imgs/service2.jpg'
-import service3 from '../../assets/home-imgs/service3.jpeg'
+import service3 from '../../assets/home-imgs/service3.jpg'
+import service4 from '../../assets/home-imgs/service4.jpeg'
 import testimage from '../../assets/home-imgs/testimage.png'
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
 import "../../styles.css"
 
 export const Home = () => {
@@ -13,15 +15,16 @@ export const Home = () => {
     service1: false,
     service2: false,
     service3: false,
+    service4: false,
     testimage: false,
   })
 
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-900 mt-[80px]">
+    <div className="min-h-screen bg-gray-100 text-gray-900">
 
       {/* HERO SECTION */}
       <section
-        className="relative bg-cover bg-center h-[90vh] flex flex-col justify-center items-center text-white"
+        className="relative bg-cover bg-center h-[100vh] flex flex-col justify-center items-center text-white"
         style={{ backgroundImage: imgError.hero ? 'none' : `url(${bcimage})` }}
       >
         <div className={`absolute inset-0 ${imgError.hero ? 'bg-gray-700' : 'bg-black/50'}`}></div>
@@ -32,9 +35,13 @@ export const Home = () => {
             <>
               <h1 className="text-5xl font-bold mb-4">¡Deja tu vehículo como nuevo!</h1>
               <p className="text-xl mb-6">Lavado profesional, detallado y protección completa.</p>
-              <button className="bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-500 transition">
-                Agenda tu lavado
-              </button>
+              <a
+                  href="#explore-menu"
+                  className="bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-500 transition cursor-pointer"
+                >
+                  Agenda tu lavado
+              </a>
+
             </>
           )}
         </div>
@@ -87,7 +94,7 @@ export const Home = () => {
             </div>
           </div>
 
-          {/* Servicio 3 - Extras */}
+          {/* Servicio 3 - Especiales */}
           <div className="bg-white text-gray-800 rounded-2xl shadow-lg overflow-hidden">
             {imgError.service3 ? (
               <div className="w-full h-56 flex items-center justify-center bg-gray-500 text-gray-300 text-lg">
@@ -99,6 +106,27 @@ export const Home = () => {
                 alt="Pulida"
                 className="w-full h-56 object-cover"
                 onError={() => setImgError(prev => ({ ...prev, service3: true }))}
+              />
+            )}
+            <div className="p-6 text-center">
+              <h3 className="text-2xl font-semibold mb-2">Servicios especiales</h3>
+              <p>Se ofrecen servicios especiales como enceramiento, pulida y lavado de motor.</p>
+              <p className="mt-3 font-bold text-yellow-400">$80.000 · 120 min</p>
+            </div>
+          </div>
+
+          {/* Servicio 4 - Extras */}
+          <div className="bg-white text-gray-800 rounded-2xl shadow-lg overflow-hidden">
+            {imgError.service4 ? (
+              <div className="w-full h-56 flex items-center justify-center bg-gray-500 text-gray-300 text-lg">
+                [Imagen no disponible]
+              </div>
+            ) : (
+              <img
+                src={service4}
+                alt="Pulida"
+                className="w-full h-56 object-cover"
+                onError={() => setImgError(prev => ({ ...prev, service4: true }))}
               />
             )}
             <div className="p-6 text-center">
@@ -152,6 +180,25 @@ export const Home = () => {
             <p className="italic">"Excelente servicio, dejaron mi carro como nuevo. 100% recomendados."</p>
             <p className="mt-3 font-semibold text-yellow-400">- Juan Pérez</p>
           </div>
+        </div>
+      </section>
+
+      {/* DONDE ENCONTRARNOS */}
+      <section className="bg-white py-20">
+        <div className="mac-w-6xl mx-auto text-center">
+            <h2 className="text-4xl font-bold mb-8">¿Dónde encontrarnos?</h2>
+            <p className="text-lg mb-6">¡Visítanos en nuestra sede principal!</p>
+            <div className="w-full h-[450px] rounded-xl overflow-hidden shadow-lg">
+              <LoadScript googleMapsApiKey="AIzaSyDyDlE15xppZof1qcuVK8kw5vaYst6jS0M">
+                <GoogleMap
+                  mapContainerStyle={{ width: '100%', height: '100%' }}
+                  center={{ lat: 2.9279, lng: -75.2803 }} // Coordenadas de Neiva, Colombia
+                  zoom={15}
+                >
+                  <Marker position={{ lat: 2.9279, lng: -75.2803 }} />
+                </GoogleMap>
+              </LoadScript>
+            </div>
         </div>
       </section>
 
