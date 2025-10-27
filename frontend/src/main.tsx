@@ -8,6 +8,7 @@ import { Admin } from './components/admin/Admin';
 import { ProtectedRoutes } from './components/ProtectedRoutes';
 import { ErrorBoundary } from './components/error/ErrorBoundary';
 import StoreContextProvider from './components/context/storeContext';
+import  UserDashboard  from './components/user/UserDashboard'
 
 const router = createBrowserRouter([
   {
@@ -29,7 +30,8 @@ const router = createBrowserRouter([
       {
         element: <ProtectedRoutes roles={['user']} to="/error" />,
         children: [
-          { path: 'services', element: <Service /> }, // RELATIVO y sin index
+          { path: 'services', element: <Service /> },
+          { path: 'dashboard', element: <UserDashboard /> }, // RELATIVO y sin index
         ],
       },
 

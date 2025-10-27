@@ -70,6 +70,16 @@ export const Navbar = ({appDispatch}: NavbarType) => {
             </NavLink>
           </li>
         }
+         {userInfo &&
+          <li>
+            <NavLink 
+              to="/dashboard" 
+              className={({isActive}) => isActive ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1" : "hover:text-gray-200"}
+            >
+              Mi Dashboard
+            </NavLink>
+          </li>
+        }
 
         {userInfo && isAdmin &&
 
