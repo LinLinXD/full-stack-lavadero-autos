@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import type { ActionsType } from '../../App'
 import { Button } from '../utils/Button'
+import PopUp from '../utils/PopUp.tsx'
 
 type LoginType = { 
   appDispatch: React.Dispatch<ActionsType>
@@ -10,6 +11,10 @@ export const Login = ({ appDispatch }: LoginType) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('')
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('')
+  const [popupType, setPopupType] = useState<'error' | 'alert' | 'success'>('error')
+  const autoCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const createAccount = () => {
     appDispatch({ type: 'login' })
@@ -36,19 +41,40 @@ export const Login = ({ appDispatch }: LoginType) => {
 
     if(!loginFetch.ok){
         console.error("Something went wrong")
+        setShowPopup(true);
+        setPopupType('error');
+        setPopupMessage('Correo o contraseña incorrecta,revise e intente de nuevo');
     } else {
-      const userInfo = await loginFetch.json()
-      appDispatch({type: 'user', payload: userInfo.payload})
+      const userData = await loginFetch.json() 
+
+      appDispatch({type: 'user', payload: userData.payload})
       appDispatch({type: 'login'})
+      
+      setPopupType('success')
+      setPopupMessage('Inicio de sesión exitoso')
+      setShowPopup(true)
+
+      // auto close popup and then toggle login modal after a short delay
+      if (autoCloseTimer.current) clearTimeout(autoCloseTimer.current)
+      autoCloseTimer.current = setTimeout(() => {
+        setShowPopup(false)
+        appDispatch({type: 'login'})
+      }, 1400)
     }
   }
+
+  useEffect(() => {
+    return () => {
+      if (autoCloseTimer.current) clearTimeout(autoCloseTimer.current)
+    }
+  }, [])
 
   const toggleLogin = () => appDispatch({ type: 'login' })
 
   return (
     <div className="fixed inset-0 bg-black/75 flex items-center justify-center z-50 ">
       
-      <div className="flex flex-col  justify-center bg-white rounded-2xl shadow-2xl w-100 p-10 relative h-120">
+      <div className="flex flex-col justify-center bg-white rounded-2xl shadow-2xl w-100 p-10 relative h-120">
         <Button 
           onClick={toggleLogin}
           className="absolute top-2 right-3 text-gray-500 hover:text-red-600 text-xl font-bold cursor-pointer"
@@ -90,6 +116,17 @@ export const Login = ({ appDispatch }: LoginType) => {
             Regístrate
           </span>
         </p>
+        <PopUp
+          isOpen={showPopup}
+          onClose={() => {
+            setShowPopup(false)
+            // if popup closed after a successful login, close the login modal too
+            if (popupType === 'success') appDispatch({ type: 'login' })
+          }}
+          message={popupMessage}
+          inline={true}
+          variant={popupType}
+        />
       </div>
     </div>
   )

@@ -2,6 +2,7 @@ import reservationModel from "../models/reservationModel.js";
 import userModel from "../models/userModel.js";
 import serviceModel from "../models/serviceModel.js";
 import ReservationService from "../services/reserveService.js";
+import HttpError from "../errors/httpError.js";
 
 const reservationService = new ReservationService(reservationModel, userModel, serviceModel);
 class ReservationController {
@@ -36,18 +37,28 @@ class ReservationController {
 
     async filterReservations(req, res, next){
         const filterInfo = req.body
-
         try{
             const reservations = await reservationService.filterReservations(filterInfo)
-
             return res.status(200).json({success: true, message: "Se ha podido filtrar exitosamente", data: reservations})
         } catch (err) {
             next(err)
         }
-
-
     }
 
+    async cancelReservation(req, res, next){
+        const {id} = req.params; 
+
+        if(!id){
+            throw new HttpError('Se debe proporcionar un Id', 400);
+        }
+
+        try{
+            const canceledReservation = await reservationService.cancelReservation(id);
+            return res.status(200).json({success: true, message: 'Su reservación ha sido cancelada con exito', payload: canceledReservation})
+        } catch (err) {
+            next(err) 
+        }
+    }
 
 }
 

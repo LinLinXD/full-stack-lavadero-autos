@@ -11,6 +11,18 @@ class UserController {
 
     }
 
+    async me (req, res, next) {
+        try{ 
+            const user = req.user;
+
+            if (user) return res.json({success: true, message: 'El usuario esta logueado', user: user});
+        
+            return res.json({success: true, message: 'No hay usuario logueado', user: user})
+        } catch (err) {
+            return next(err)
+        }
+    }
+
     async register (req, res, next) {
         try{
             const userInfo = req.body;
@@ -42,7 +54,8 @@ class UserController {
                     payload: {
                         id: user.id,
                         username: user.username,
-                        email: user.email
+                        email: user.email,
+                        rol: user.rol
                     }
                 })
 
