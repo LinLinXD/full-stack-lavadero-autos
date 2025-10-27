@@ -10,7 +10,7 @@ class ReservationService {
     async createReservation (reservationInfo, userInfo) {
         const {servicios, placa, fecha, hora} = reservationInfo
         const placaNorm = String(placa).trim().toUpperCase()
-
+        console.log(reservationInfo)
         if(!servicios || !placa || !fecha || !hora) {
             throw new HttpError("Debe proporcionarse los servicios, la placa del carro, la fecha y/o la hora de la reservación", 400)
         }
@@ -19,9 +19,14 @@ class ReservationService {
         const endDate = new Date(formatedDate);
         endDate.setHours(formatedDate.getHours() + 1)
 
-        const cantidadReservaciones = await this.reservationModel.countDocuments({fecha: { $gte: formatedDate, $lt: endDate}})
-                
-        if(cantidadReservaciones >= 3){
+        const cantidadReservacionesHora = await this.reservationModel.countDocuments({fecha: { $gte: formatedDate, $lt: endDate}})
+        const cantidadReservacionesUsuario = await this.reservationModel.countDocuments({id_usuario: userInfo.id})
+
+        if(cantidadReservacionesUsuario >= 3){
+            throw new HttpError(`No se puede agendar más de ${cantidadReservacionesUsuario} reservas por usuario`, 409, 'out-of-bound')
+        }
+
+        if(cantidadReservacionesHora >= 3){
             throw new HttpError(`No se puede agender más reservaciones para la hora ${hora}`, 409)
         }
 
