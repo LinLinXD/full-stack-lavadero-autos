@@ -126,6 +126,7 @@ class ReservationService {
 
             if(isValidReservation.estado !== 'cancelado'){
                 const reservaCancelada = await this.reservationModel.findByIdAndUpdate(reservationId, {estado: 'cancelado'}, {new: true})
+                await this.reservationModel.findByIdAndDelete(reservationId) 
                 return reservaCancelada;
             } else {
                 throw new HttpError('La reservación no se encuentra activa')
