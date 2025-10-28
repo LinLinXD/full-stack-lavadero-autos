@@ -7,7 +7,6 @@ import service2 from '../../assets/home-imgs/service2.jpg'
 import service3 from '../../assets/home-imgs/service3.jpg'
 import service4 from '../../assets/home-imgs/service4.jpeg'
 import testimage from '../../assets/home-imgs/testimage.png'
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
 import "../../styles.css"
 
 export const Home = () => {
@@ -197,17 +196,6 @@ export const Home = () => {
         <div className="mac-w-6xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-8">¿Dónde encontrarnos?</h2>
             <p className="text-lg mb-6">¡Visítanos en nuestra sede principal!</p>
-            <div className="w-full h-[450px] rounded-xl overflow-hidden shadow-lg">
-              <LoadScript googleMapsApiKey="AIzaSyDyDlE15xppZof1qcuVK8kw5vaYst6jS0M">
-                <GoogleMap
-                  mapContainerStyle={{ width: '100%', height: '100%' }}
-                  center={{ lat: 2.9279, lng: -75.2803 }} // Coordenadas de Neiva, Colombia
-                  zoom={15}
-                >
-                  <Marker position={{ lat: 2.9279, lng: -75.2803 }} />
-                </GoogleMap>
-              </LoadScript>
-            </div>
         </div>
       </section>
 
