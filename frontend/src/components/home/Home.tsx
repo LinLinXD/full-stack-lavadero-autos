@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import bcimage from '../../assets/home-imgs/bcimage.jpeg'
 import service1 from '../../assets/home-imgs/service1.jpg'
@@ -19,6 +20,13 @@ export const Home = () => {
     testimage: false,
   })
 
+  const navigate = useNavigate();
+
+  const handleNavigateToServices = () => {
+    navigate('/services'); // redirige al usuario a la ruta de servicios
+  };
+
+
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900">
 
@@ -35,12 +43,13 @@ export const Home = () => {
             <>
               <h1 className="text-5xl font-bold mb-4">¡Deja tu vehículo como nuevo!</h1>
               <p className="text-xl mb-6">Lavado profesional, detallado y protección completa.</p>
-              <a
-                  href="#explore-menu"
-                  className="bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-500 transition cursor-pointer"
-                >
-                  Agenda tu lavado
-              </a>
+              <button
+                onClick={handleNavigateToServices}
+                className="bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-500 transition cursor-pointer"
+              >
+                Agenda tu lavado
+              </button>
+
 
             </>
           )}
