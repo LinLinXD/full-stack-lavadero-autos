@@ -1,6 +1,7 @@
+import type { ReactNode } from "react";
 
 type ButtonType = {
-    children: string,
+    children: string | ReactNode,
     className: string,
     onClick?: () => void,
     type?: "submit" | "reset" | "button" 
