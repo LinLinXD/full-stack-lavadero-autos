@@ -1,5 +1,6 @@
 // components/admin/Admin.tsx
 import { useEffect, useMemo, useState } from "react";
+import { Button } from "../utils/Button";
 
 type FilterInfo = {
   placa?: string;
@@ -198,6 +199,7 @@ export const Admin = () => {
               <th className="px-4 py-3 font-semibold">Email</th>
               <th className="px-4 py-3 font-semibold">Servicios</th>
               <th className="px-4 py-3 font-semibold">Total estimado</th>
+              <th className="px-4 py-3 font-semibold">Estado</th>
             </tr>
           </thead>
           <tbody>
@@ -211,7 +213,7 @@ export const Admin = () => {
 
             {!loading && data?.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-4 py-6 text-center text-gray-500">
+                <td colSpan={8} className="px-4 py-6 text-center text-gray-500">
                   Sin resultados para los filtros aplicados.
                 </td>
               </tr>
@@ -238,6 +240,35 @@ export const Admin = () => {
                     </td>
                     <td className="px-4 py-3 font-medium">
                       {servicios.length ? `$${total}` : "-"}
+                    </td>
+                    <td>
+                      <form className="flex items-center gap-1 pr-2 pl-2">
+                          <select
+                            className="appearance-none rounded-md border border-gray-300 bg-white pl-3 pr-9 py-2 text-sm text-gray-800 
+                                  shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none transition"
+                          >
+                            <option value="activo">Activo</option>
+                            <option value="en curso">En curso</option>
+                            <option value="completado">Completado</option>
+                            <option value="cancelado">Cancelado</option>
+                          </select>
+
+                          <Button
+                            type="submit"
+                            className="
+                              inline-flex h-8 w-8 items-center justify-center
+                              rounded-md bg-blue-600 text-white
+                              p-0 border-0 leading-none
+                              hover:bg-blue-700 active:bg-blue-800
+                              focus:outline-none focus:ring-2 focus:ring-blue-200
+                              transition
+                            "
+                          >
+                            <span className="material-symbols-outlined text-[18px] leading-none">
+                              check
+                            </span>
+                          </Button>
+                      </form>
                     </td>
                   </tr>
                 );
