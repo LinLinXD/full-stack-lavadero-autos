@@ -73,7 +73,7 @@ const UserDashboard: React.FC = () => {
       setError('');
       
       const response = await fetch(`http://localhost:3000/reservation/cancel-reservation/${reservationId}`, {
-        method: 'PATCH',
+        method: 'DELETE',
         credentials: 'include'
       });
 
@@ -210,28 +210,11 @@ const calculateTotal = (servicios: Service[]) => {
     return 25000;
 };
 
-  // Calcular estadísticas
   const activeReservations = reservations.filter(res => res.estado === 'activo').length;
+  const enCursoReservations = reservations.filter(res => res.estado === 'en curso').length;
   const completedReservations = reservations.filter(res => res.estado === 'completado').length;
   const totalReservations = reservations.length;
 
-  if (!isLoggedIn) {
-    return (
-      <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center py-12">
-            <svg className="mx-auto h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-            <h3 className="mt-4 text-lg font-medium text-gray-900">Acceso no autorizado</h3>
-            <p className="mt-2 text-sm text-gray-500">
-              Debes iniciar sesión para ver tus reservaciones.
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   if (loading) {
     return (
@@ -297,10 +280,31 @@ const calculateTotal = (servicios: Service[]) => {
           <div className="bg-white overflow-hidden shadow rounded-lg border border-gray-200">
             <div className="px-4 py-5 sm:p-6">
               <dt className="text-sm font-medium text-gray-500 truncate">
-                Completadas
+                Reservaciones En Curso
+              </dt>
+              <dd className="mt-1 text-3xl font-semibold text-purple-600">
+                {enCursoReservations}
+              </dd>
+            </div>
+          </div>
+
+          <div className="bg-white overflow-hidden shadow rounded-lg border border-gray-200">
+            <div className="px-4 py-5 sm:p-6">
+              <dt className="text-sm font-medium text-gray-500 truncate">
+                Reservaciones Completadas
               </dt>
               <dd className="mt-1 text-3xl font-semibold text-blue-600">
                 {completedReservations}
+              </dd>
+            </div>
+          </div>
+            <div className="bg-white overflow-hidden shadow rounded-lg border border-gray-200">
+            <div className="px-4 py-5 sm:p-6">
+              <dt className="text-sm font-medium text-gray-500 truncate">
+                Total de reservaciones
+              </dt>
+              <dd className="mt-1 text-3xl font-semibold text-yellow-600">
+                {totalReservations}
               </dd>
             </div>
           </div>
