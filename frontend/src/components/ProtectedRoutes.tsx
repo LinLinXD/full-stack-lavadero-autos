@@ -1,35 +1,73 @@
-import { useContext } from "react"
-import { AuthContext } from "./context/authContext"
-import { Navigate, Outlet, useLocation } from "react-router-dom"
-
+import { useEffect, useState } from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 type ProtectedRoutesType = {
-    roles: string[],
-    to?: string
-}
+  roles: string[];
+  to?: string;
+};
 
-export const ProtectedRoutes = ({roles, to = '/error'} : ProtectedRoutesType) => {
-    const location = useLocation();
-    const authContext = useContext(AuthContext);
+type UserResponse = {
+  success: boolean;
+  message: string;
+  user: {
+    id: string;
+    username: string;
+    email: string;
+    rol: string[];
+  };
+};
 
-    if(!authContext.isLoggedIn) {
-        return <Navigate
-            to={to}
-            replace
-            state={{
-                code: 401,
-                reason: "unauthorized",
-                message: "Debes iniciar sesión para acceder a esta sección",
-                from: location.pathname,
-            }}
-        />
-    }
+export const ProtectedRoutes = ({ roles, to = "/error" }: ProtectedRoutesType) => {
+  const [userData, setUserData] = useState<UserResponse | null>(null);
+  const [loading, setLoading] = useState(true); 
+  const location = useLocation();
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/auth/me", {
+          credentials: "include",
+        });
 
+        if (!res.ok) {
+          setUserData(null);
+          return;
+        }
 
-  const userRoles = authContext?.userInfo?.rol ?? [];
+        const user: UserResponse = await res.json();
+        setUserData(user);
+      } catch {
+        setUserData(null);
+      } finally {
+        setLoading(false); 
+      }
+    };
 
-  const hasAllowedRole = roles.length === 0 ? true : roles.some(r => userRoles.includes(r));
+    fetchUser();
+  }, []);
+
+  if (loading) {
+    return <div>Cargando...</div>; 
+  }
+
+  if (!userData) {
+    return (
+      <Navigate
+        to={to}
+        replace
+        state={{
+          code: 401,
+          reason: "unauthorized",
+          message: "Debes iniciar sesión para acceder a esta sección",
+          from: location.pathname,
+        }}
+      />
+    );
+  }
+
+  const userRoles = userData.user?.rol ?? [];
+  const hasAllowedRole =
+    roles.length === 0 ? true : roles.some((r) => userRoles.includes(r));
 
   if (!hasAllowedRole) {
     return (
@@ -44,9 +82,7 @@ export const ProtectedRoutes = ({roles, to = '/error'} : ProtectedRoutesType) =>
         }}
       />
     );
-  } else {
-    return <Outlet/>
   }
-}
 
-
+  return <Outlet />;
+};

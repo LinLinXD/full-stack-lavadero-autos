@@ -19,8 +19,6 @@ export const Navbar = ({appDispatch}: NavbarType) => {
     } else {
       setAdmin(false)
     }
-
-    console.log(isAdmin);
   }, [userInfo])
 
   const toggleLogin = () => {
@@ -39,9 +37,6 @@ export const Navbar = ({appDispatch}: NavbarType) => {
 
     if(logoutFetch.ok) {
       appDispatch({type: 'logout'})
-
-    } else {
-      console.error("something went wrong")
     }
   }
 
