@@ -43,9 +43,12 @@ export const Navbar = ({appDispatch}: NavbarType) => {
   return (
     <nav className="bg-blue-900 text-white px-6 py-1 flex justify-between items-center sticky top-0 left-0 w-full z-50 shadow-md">
    
-      <img src={logo} className='h-18'/>
+      <NavLink 
+        to="/" 
+      >
+        <img src={logo} className='h-18'/>
+      </NavLink>
 
-      {/* Links */}
       <ul className="hidden md:flex gap-6 items-center">
         <li>
           <NavLink 
