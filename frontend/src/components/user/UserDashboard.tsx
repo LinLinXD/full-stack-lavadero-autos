@@ -84,7 +84,7 @@ const UserDashboard: React.FC = () => {
       const result = await response.json();
       
       if (result.success) {
-        // En lugar de actualizar el estado, eliminar la reservación del array
+        
         setReservations(prev => prev.filter(res => res.id !== reservationId));
       } else {
         setError(result.message || 'Error al cancelar la reservación');
@@ -148,13 +148,17 @@ const UserDashboard: React.FC = () => {
     );
   };
 
-  const getServiceType = (servicios: Service[]) => {
-    if (servicios && servicios.length > 0) {
-      const serviceNames = servicios.map(service => service.nombre);
-      return serviceNames.length > 0 ? serviceNames.join(' + ') : `Servicios (${servicios.length})`;
+ const getServiceType = (servicios: Service[]) => {
+  if (servicios && servicios.length > 0) {
+    const serviceNames = servicios.map(service => service.nombre);
+    if (serviceNames.length <= 3) {
+      return serviceNames.join(' + ');
+    } else {
+      return `${serviceNames.slice(0, 2).join(' + ')} + ${serviceNames.length - 2} más`;
     }
-    return 'Lavado Completo';
-  };
+  }
+  return 'Lavado Completo';
+};
 
   const getServiceDetails = (servicios: Service[]) => {
     if (servicios && servicios.length > 0) {
@@ -194,10 +198,10 @@ const UserDashboard: React.FC = () => {
 const parseCurrency = (value: string | number): number => {
   if (typeof value === 'number') return value;
   
-  // Remover símbolos de moneda, espacios y puntos (separadores de miles)
+
   const cleaned = value.replace(/[^\d,-]/g, '').replace(/\./g, '');
   
-  // Reemplazar coma decimal por punto
+
   const normalized = cleaned.replace(',', '.');
   
   return parseFloat(normalized) || 0;
@@ -387,7 +391,7 @@ const calculateTotal = (servicios: Service[]) => {
                     {/* Información básica */}
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                       <div className="flex items-center mb-2 sm:mb-0">
-                        <p className="text-lg font-semibold text-gray-900 truncate">
+                        <p className="text-lg font-semibold text-gray-900 break-words whitespace-normal">
                           {getServiceType(reservation.id_servicio)}
                         </p>
                         <div className="ml-3">
