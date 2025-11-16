@@ -1,26 +1,24 @@
-// components/admin/Admin.tsx
 import { useEffect, useMemo, useState } from "react";
-import { Button } from "../utils/Button";
+import { ReservationRow } from "./ReservationRow";
 
 type FilterInfo = {
   placa?: string;
   estado?: string;
-  inicio?: string; // ISO yyyy-mm-dd
-  fin?: string;    // ISO yyyy-mm-dd
+  inicio?: string;
+  fin?: string;
   username?: string;
   servicio?: string;
 };
 
 type Usuario = { username: string; email: string };
-type Servicio = { nombre: string; costo: number };
+export type Servicio = { nombre: string; costo: number };
 
-type Reserva = {
+export type Reserva = {
   _id: string;
   placa?: string;
   estado?: string;
   fecha?: string;
   id_usuario?: Usuario | null;
-  // El backend a veces popula arreglo, a veces objeto → soportar ambos
   id_servicio?: Servicio | Servicio[] | null;
 };
 
@@ -32,7 +30,6 @@ export const Admin = () => {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
-  // Validación mínima de fechas
   const dateError = useMemo(() => {
     if (filters.inicio && filters.fin && filters.inicio > filters.fin) {
       return "La fecha de inicio no puede ser mayor que la fecha fin.";
@@ -82,7 +79,7 @@ export const Admin = () => {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (dateError) return;
-    // Enviar solo campos “seteados”
+
     const body: FilterInfo = {};
     (["placa", "estado", "inicio", "fin", "username", "servicio"] as const).forEach((k) => {
       const v = filters[k];
@@ -91,7 +88,6 @@ export const Admin = () => {
     fetchData(body);
   };
 
-  // Helper para normalizar servicios a arreglo
   const getServicios = (s?: Servicio | Servicio[] | null): Servicio[] => {
     if (!s) return [];
     return Array.isArray(s) ? s : [s];
@@ -224,54 +220,7 @@ export const Admin = () => {
                 const servicios = getServicios(r.id_servicio);
                 const total = servicios.reduce((acc, s) => acc + (s.costo ?? 0), 0);
 
-                return (
-                  <tr key={r._id} className="border-t">
-                    <td className="px-4 py-3">{r.placa ?? "-"}</td>
-                    <td className="px-4 py-3 capitalize">{r.estado ?? "-"}</td>
-                    <td className="px-4 py-3">
-                      {r.fecha ? new Date(r.fecha).toLocaleString() : "-"}
-                    </td>
-                    <td className="px-4 py-3">{r.id_usuario?.username ?? "-"}</td>
-                    <td className="px-4 py-3">{r.id_usuario?.email ?? "-"}</td>
-                    <td className="px-4 py-3">
-                      {servicios.length
-                        ? servicios.map((s) => `${s.nombre} ($${s.costo})`).join(", ")
-                        : "-"}
-                    </td>
-                    <td className="px-4 py-3 font-medium">
-                      {servicios.length ? `$${total}` : "-"}
-                    </td>
-                    <td>
-                      <form className="flex items-center gap-1 pr-2 pl-2">
-                          <select
-                            className="appearance-none rounded-md border border-gray-300 bg-white pl-3 pr-9 py-2 text-sm text-gray-800 
-                                  shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none transition"
-                          >
-                            <option value="activo">Activo</option>
-                            <option value="en curso">En curso</option>
-                            <option value="completado">Completado</option>
-                            <option value="cancelado">Cancelado</option>
-                          </select>
-
-                          <Button
-                            type="submit"
-                            className="
-                              inline-flex h-8 w-8 items-center justify-center
-                              rounded-md bg-blue-600 text-white
-                              p-0 border-0 leading-none
-                              hover:bg-blue-700 active:bg-blue-800
-                              focus:outline-none focus:ring-2 focus:ring-blue-200
-                              transition
-                            "
-                          >
-                            <span className="material-symbols-outlined text-[18px] leading-none">
-                              check
-                            </span>
-                          </Button>
-                      </form>
-                    </td>
-                  </tr>
-                );
+                return <ReservationRow r={r} servicios={servicios} total={total} refreshFilter={onSubmit}/>
               })}
           </tbody>
         </table>
