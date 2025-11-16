@@ -60,6 +60,18 @@ class ReservationController {
         }
     }
 
+    async updateReservationsStatus(req, res, next){
+        const {id, estado} = req.body
+
+        try{
+            const updatedReservation = await reservationService.updateReservation(id, estado)
+
+            res.status(200).json({ success: true, payload: updatedReservation})
+        } catch (err) {
+            next(err)
+        }
+    }
+
 }
 
 export default ReservationController

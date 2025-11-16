@@ -1,6 +1,7 @@
 import UserService from "../services/userService.js"
 import userModel from "../models/userModel.js"
 import createConfig from "../config/config.js"
+import HttpError from "../errors/httpError.js"
 
 const { salt } = createConfig()
 
@@ -17,7 +18,7 @@ class UserController {
 
             if (user) return res.json({success: true, message: 'El usuario esta logueado', user: user});
         
-            return res.json({success: true, message: 'No hay usuario logueado', user: user})
+            throw new HttpError('No hay usuario logueado', 401, 'no-account')
         } catch (err) {
             return next(err)
         }

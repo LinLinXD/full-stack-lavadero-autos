@@ -117,7 +117,6 @@ class ReservationService {
         }
 
         async cancelReservation(reservationId){
-  
             const isValidReservation = await this.reservationModel.findOne({_id: reservationId})
                 
             if(!isValidReservation){
@@ -131,7 +130,37 @@ class ReservationService {
             } else {
                 throw new HttpError('La reservación no se encuentra activa')
             }
+        }
 
+        async updateReservation(id, estado) {
+            const validStatuses = ["activo", "en curso", "completado", "cancelado"]
+            const isStatusValid = validStatuses.find(status => status === estado)
+
+            if(!isStatusValid){
+                throw new HttpError('El estado no es valido', 400, 'invalid-data')
+            }
+            
+            const isValidReservation = await this.reservationModel.findOne({_id: id})
+
+            if(!isValidReservation){
+                throw new HttpError('No se ha encontrado ninguna reservación', 400, 'not-found')
+            }
+
+            if(estado === isValidReservation.estado){
+                throw new HttpError(`El estado "${estado}" ya se encuentra seleccionado`, 400)
+            }
+
+            if(estado === 'cancelado'){
+                throw new HttpError(`El estado "${estado}" no puede ser alterado`, 400)
+            }
+
+            try{
+                const updatedReservation = await this.reservationModel.findByIdAndUpdate(id, { estado: estado }, { new: true })
+
+                return updatedReservation
+            } catch (err) {
+                throw new HttpError(err.message, 500)
+            }
 
         }
 

@@ -16,7 +16,7 @@ const reservaSchema = Schema({
     },
     estado: {
         type: String,
-        enum: ["activo", "completado", "cancelado"]
+        enum: ["activo", "en curso", "completado", "cancelado"]
     },
     fecha: {
         type: Date,
