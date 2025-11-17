@@ -1,5 +1,9 @@
+// Código completo actualizado con carrusel en la sección "¿Por qué elegirnos?"
+// IMPORTANTE: Ajusta rutas de íconos e imágenes según tu proyecto.
+
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import bcimage from '../../assets/home-imgs/bcimage.jpeg'
 import service1 from '../../assets/home-imgs/service1.jpg'
@@ -22,9 +26,37 @@ export const Home = () => {
   const navigate = useNavigate();
 
   const handleNavigateToServices = () => {
-    navigate('/services'); // redirige al usuario a la ruta de servicios
+    navigate('/services');
   };
 
+  // --- CARRUSEL "POR QUÉ ELEGIRNOS" ---
+  const slides = [
+    {
+      title: "🧽 Calidad Garantizada",
+      text: "Utilizamos los mejores productos y técnicas del mercado.",
+      img: "", // Imagen opcional
+    },
+    {
+      title: "⚡ Servicio Rápido",
+      text: "Tu auto limpio y reluciente en tiempo récord.",
+      img: "",
+    },
+    {
+      title: "💰 Precios Accesibles",
+      text: "Calidad premium a precios que te encantarán.",
+      img: "",
+    },
+  ];
+
+  const [index, setIndex] = useState(0);
+
+  const prevSlide = () => {
+    setIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+  };
+
+  const nextSlide = () => {
+    setIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900">
@@ -48,8 +80,6 @@ export const Home = () => {
               >
                 Agenda tu lavado
               </button>
-
-
             </>
           )}
         </div>
@@ -60,7 +90,7 @@ export const Home = () => {
         <h2 className="text-4xl font-bold text-center mb-12">Nuestros Servicios</h2>
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
 
-          {/* Servicio 1 - Lavado Completo */}
+          {/* Servicio 1 */}
           <div className="bg-white text-gray-800 rounded-2xl shadow-lg overflow-hidden">
             {imgError.service1 ? (
               <div className="w-full h-56 flex items-center justify-center bg-gray-500 text-gray-300 text-lg">
@@ -81,7 +111,7 @@ export const Home = () => {
             </div>
           </div>
 
-          {/* Servicio 2 - Limpieza Interior Premium */}
+          {/* Servicio 2 */}
           <div className="bg-white text-gray-800 rounded-2xl shadow-lg overflow-hidden">
             {imgError.service2 ? (
               <div className="w-full h-56 flex items-center justify-center bg-gray-500 text-gray-300 text-lg">
@@ -102,7 +132,7 @@ export const Home = () => {
             </div>
           </div>
 
-          {/* Servicio 3 - Especiales */}
+          {/* Servicio 3 */}
           <div className="bg-white text-gray-800 rounded-2xl shadow-lg overflow-hidden">
             {imgError.service3 ? (
               <div className="w-full h-56 flex items-center justify-center bg-gray-500 text-gray-300 text-lg">
@@ -118,12 +148,12 @@ export const Home = () => {
             )}
             <div className="p-6 text-center">
               <h3 className="text-2xl font-semibold mb-2">Servicios especiales</h3>
-              <p>Se ofrecen servicios especiales como enceramiento, pulida y lavado de motor.</p>
+              <p>Enceramiento, pulida y lavado de motor.</p>
               <p className="mt-3 font-bold text-yellow-400">$80.000 · 120 min</p>
             </div>
           </div>
 
-          {/* Servicio 4 - Extras */}
+          {/* Servicio 4 */}
           <div className="bg-white text-gray-800 rounded-2xl shadow-lg overflow-hidden">
             {imgError.service4 ? (
               <div className="w-full h-56 flex items-center justify-center bg-gray-500 text-gray-300 text-lg">
@@ -139,31 +169,66 @@ export const Home = () => {
             )}
             <div className="p-6 text-center">
               <h3 className="text-2xl font-semibold mb-2">Servicios extras</h3>
-              <p>Pulido completo de la pintura, incluye encerado final para máximo brillo y protección.</p>
+              <p>Pulido completo más encerado para máximo brillo y protección.</p>
               <p className="mt-3 font-bold text-yellow-400">$80.000 · 120 min</p>
             </div>
           </div>
-
         </div>
       </section>
 
-      {/* POR QUÉ ELEGIRNOS */}
+      {/* --- "POR QUÉ ELEGIRNOS" --- */}
       <section className="bg-white py-20 transition-colors">
-        <div className="max-w-6xl mx-auto px-4 text-center">
+        <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-8">¿Por qué elegirnos?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-6">
-              <h3 className="text-2xl font-semibold mb-3 text-yellow-400">🧽 Calidad Garantizada</h3>
-              <p>Utilizamos los mejores productos y técnicas del mercado.</p>
+
+          <div className="relative overflow-hidden">
+            {/* Contenedor del slider */}
+            <div
+              className="transition-all duration-500 ease-in-out"
+              style={{ transform: `translateX(-${index * 100}%)` }}
+            >
+              <div className="flex">
+                {slides.map((slide, i) => (
+                  <div key={i} className="min-w-full px-6 flex flex-col items-center">
+                    {slide.img && (
+                      <img
+                        src={slide.img}
+                        alt={slide.title}
+                        className="w-40 h-40 object-cover rounded-xl mb-4 shadow"
+                      />
+                    )}
+                    <h3 className="text-2xl font-semibold mb-3 text-yellow-400">{slide.title}</h3>
+                    <p className="text-lg">{slide.text}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="p-6">
-              <h3 className="text-2xl font-semibold mb-3 text-yellow-400">⚡ Servicio Rápido</h3>
-              <p>Tu auto limpio y reluciente en tiempo récord.</p>
-            </div>
-            <div className="p-6">
-              <h3 className="text-2xl font-semibold mb-3 text-yellow-400">💰 Precios Accesibles</h3>
-              <p>Calidad premium a precios que te encantarán.</p>
-            </div>
+
+            {/* Botón Izquierdo */}
+            <button
+              onClick={prevSlide}
+              className="absolute left-0 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/40 p-3 rounded-full transition-all"
+            >
+              <ChevronLeft size={28} />
+            </button>
+
+            {/* Botón Derecho */}
+            <button
+              onClick={nextSlide}
+              className="absolute right-0 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/40 p-3 rounded-full transition-all"
+            >
+              <ChevronRight size={28} />
+            </button>
+          </div>
+
+          {/* Indicadores */}
+          <div className="flex justify-center mt-6 gap-3">
+            {slides.map((_, i) => (
+              <div
+                key={i}
+                className={`w-3 h-3 rounded-full transition-all duration-300 ${index === i ? "bg-yellow-400 scale-125" : "bg-gray-300"}`}
+              ></div>
+            ))}
           </div>
         </div>
       </section>
@@ -174,9 +239,7 @@ export const Home = () => {
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-8 px-4">
           <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center">
             {imgError.testimage ? (
-              <div className="w-24 h-24 flex items-center justify-center bg-gray-500 rounded-full text-gray-300 text-sm">
-                [Foto]
-              </div>
+              <div className="w-24 h-24 flex items-center justify-center bg-gray-500 rounded-full text-gray-300 text-sm">[Foto]</div>
             ) : (
               <img
                 src={testimage}
@@ -194,8 +257,8 @@ export const Home = () => {
       {/* DONDE ENCONTRARNOS */}
       <section className="bg-white py-20">
         <div className="mac-w-6xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-8">¿Dónde encontrarnos?</h2>
-            <p className="text-lg mb-6">¡Visítanos en nuestra sede principal!</p>
+          <h2 className="text-4xl font-bold mb-8">¿Dónde encontrarnos?</h2>
+          <p className="text-lg mb-6">¡Visítanos en nuestra sede principal!</p>
         </div>
       </section>
 
@@ -225,6 +288,7 @@ export const Home = () => {
           © 2025 Drive&Shine Pro. Todos los derechos reservados.
         </div>
       </footer>
+
     </div>
-  )
-}
+  );
+};

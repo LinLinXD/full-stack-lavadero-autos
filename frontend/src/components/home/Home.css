@@ -1,0 +1,5 @@
+/* Home background - Dark Gray */
+.home-container {
+  background-color: #374151;
+  min-height: 100vh;
+}
