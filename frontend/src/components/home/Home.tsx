@@ -1,6 +1,3 @@
-// Código completo actualizado con carrusel en la sección "¿Por qué elegirnos?"
-// IMPORTANTE: Ajusta rutas de íconos e imágenes según tu proyecto.
-
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -11,7 +8,11 @@ import service2 from '../../assets/home-imgs/service2.jpg'
 import service3 from '../../assets/home-imgs/service3.jpg'
 import service4 from '../../assets/home-imgs/service4.jpeg'
 import testimage from '../../assets/home-imgs/testimage.png'
+import carrusel_img1 from '../../assets/home-imgs/carrusel_img1.webp'
+import carrusel_img2 from '../../assets/home-imgs/carrusel_img2.jpg'
+import carrusel_img3 from '../../assets/home-imgs/carrusel_img3.jpg'
 import "../../styles.css"
+import "./Home.css"
 
 export const Home = () => {
   const [imgError, setImgError] = useState({
@@ -20,6 +21,9 @@ export const Home = () => {
     service2: false,
     service3: false,
     service4: false,
+    carrusel_img1: false,
+    carrusel_img2: false,
+    carrusel_img3: false,
     testimage: false,
   })
 
@@ -34,17 +38,17 @@ export const Home = () => {
     {
       title: "🧽 Calidad Garantizada",
       text: "Utilizamos los mejores productos y técnicas del mercado.",
-      img: "", // Imagen opcional
+      img: carrusel_img1,
     },
     {
       title: "⚡ Servicio Rápido",
       text: "Tu auto limpio y reluciente en tiempo récord.",
-      img: "",
+      img: carrusel_img2,
     },
     {
       title: "💰 Precios Accesibles",
       text: "Calidad premium a precios que te encantarán.",
-      img: "",
+      img: carrusel_img3,
     },
   ];
 
@@ -59,14 +63,18 @@ export const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-900">
+
+    <div className="home-container min-h-screen text-gray-900">
+      
 
       {/* HERO SECTION */}
       <section
         className="relative bg-cover bg-center h-[100vh] flex flex-col justify-center items-center text-white"
         style={{ backgroundImage: imgError.hero ? 'none' : `url(${bcimage})` }}
       >
-        <div className={`absolute inset-0 ${imgError.hero ? 'bg-gray-700' : 'bg-black/50'}`}></div>
+        {/* Overlay con clase personalizada */}
+        <div className={`hero-overlay ${imgError.hero ? 'no-image' : ''}`}></div>
+        
         <div className="relative z-10 text-center px-6">
           {imgError.hero ? (
             <p className="text-3xl font-semibold">[Imagen principal no disponible]</p>
@@ -76,7 +84,7 @@ export const Home = () => {
               <p className="text-xl mb-6">Lavado profesional, detallado y protección completa.</p>
               <button
                 onClick={handleNavigateToServices}
-                className="bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-500 transition cursor-pointer"
+                className="hero-button bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-500 cursor-pointer"
               >
                 Agenda tu lavado
               </button>
@@ -86,14 +94,14 @@ export const Home = () => {
       </section>
 
       {/* SERVICIOS */}
-      <section className="bg-gray-100 py-20 transition-colors">
+      <section className="py-20 transition-colors">
         <h2 className="text-4xl font-bold text-center mb-12">Nuestros Servicios</h2>
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
 
           {/* Servicio 1 */}
-          <div className="bg-white text-gray-800 rounded-2xl shadow-lg overflow-hidden">
+          <div className="service-card bg-gray-100 text-gray-800 rounded-2xl shadow-lg overflow-hidden">
             {imgError.service1 ? (
-              <div className="w-full h-56 flex items-center justify-center bg-gray-500 text-gray-300 text-lg">
+              <div className="image-placeholder w-full h-56">
                 [Imagen no disponible]
               </div>
             ) : (
@@ -107,14 +115,14 @@ export const Home = () => {
             <div className="p-6 text-center">
               <h3 className="text-2xl font-semibold mb-2">Lavado Completo</h3>
               <p>Lavado exterior e interior, incluye aspirado y limpieza básica de tapicería.</p>
-              <p className="mt-3 font-bold text-yellow-400">$40.000 · 60 min</p>
+              <p className="service-price mt-3 font-bold">$40.000 · 60 min</p>
             </div>
           </div>
 
           {/* Servicio 2 */}
-          <div className="bg-white text-gray-800 rounded-2xl shadow-lg overflow-hidden">
+          <div className="service-card bg-gray-100 text-gray-800 rounded-2xl shadow-lg overflow-hidden">
             {imgError.service2 ? (
-              <div className="w-full h-56 flex items-center justify-center bg-gray-500 text-gray-300 text-lg">
+              <div className="image-placeholder w-full h-56">
                 [Imagen no disponible]
               </div>
             ) : (
@@ -128,14 +136,14 @@ export const Home = () => {
             <div className="p-6 text-center">
               <h3 className="text-2xl font-semibold mb-2">Limpieza Interior Premium</h3>
               <p>Limpieza completa de interior con tapicería, plásticos y aspirado profundo.</p>
-              <p className="mt-3 font-bold text-yellow-400">$35.000 · 60 min</p>
+              <p className="service-price mt-3 font-bold">$35.000 · 60 min</p>
             </div>
           </div>
 
           {/* Servicio 3 */}
-          <div className="bg-white text-gray-800 rounded-2xl shadow-lg overflow-hidden">
+          <div className="service-card bg-gray-100 text-gray-800 rounded-2xl shadow-lg overflow-hidden">
             {imgError.service3 ? (
-              <div className="w-full h-56 flex items-center justify-center bg-gray-500 text-gray-300 text-lg">
+              <div className="image-placeholder w-full h-56">
                 [Imagen no disponible]
               </div>
             ) : (
@@ -149,14 +157,14 @@ export const Home = () => {
             <div className="p-6 text-center">
               <h3 className="text-2xl font-semibold mb-2">Servicios especiales</h3>
               <p>Enceramiento, pulida y lavado de motor.</p>
-              <p className="mt-3 font-bold text-yellow-400">$80.000 · 120 min</p>
+              <p className="service-price mt-3 font-bold">$80.000 · 120 min</p>
             </div>
           </div>
 
           {/* Servicio 4 */}
-          <div className="bg-white text-gray-800 rounded-2xl shadow-lg overflow-hidden">
+          <div className="service-card bg-gray-100 text-gray-800 rounded-2xl shadow-lg overflow-hidden">
             {imgError.service4 ? (
-              <div className="w-full h-56 flex items-center justify-center bg-gray-500 text-gray-300 text-lg">
+              <div className="image-placeholder w-full h-56">
                 [Imagen no disponible]
               </div>
             ) : (
@@ -170,63 +178,65 @@ export const Home = () => {
             <div className="p-6 text-center">
               <h3 className="text-2xl font-semibold mb-2">Servicios extras</h3>
               <p>Pulido completo más encerado para máximo brillo y protección.</p>
-              <p className="mt-3 font-bold text-yellow-400">$80.000 · 120 min</p>
+              <p className="service-price mt-3 font-bold">$80.000 · 120 min</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* --- "POR QUÉ ELEGIRNOS" --- */}
-      <section className="bg-white py-20 transition-colors">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-8">¿Por qué elegirnos?</h2>
+      <section className="py-20 transition-colors">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center mb-12">¿Por qué elegirnos?</h2>
 
-          <div className="relative overflow-hidden">
+          <div className="relative overflow-hidden bg-gray-50 rounded-2xl shadow-xl p-8">
             {/* Contenedor del slider */}
-            <div
-              className="transition-all duration-500 ease-in-out"
-              style={{ transform: `translateX(-${index * 100}%)` }}
-            >
-              <div className="flex">
-                {slides.map((slide, i) => (
-                  <div key={i} className="min-w-full px-6 flex flex-col items-center">
-                    {slide.img && (
-                      <img
-                        src={slide.img}
-                        alt={slide.title}
-                        className="w-40 h-40 object-cover rounded-xl mb-4 shadow"
-                      />
-                    )}
-                    <h3 className="text-2xl font-semibold mb-3 text-yellow-400">{slide.title}</h3>
-                    <p className="text-lg">{slide.text}</p>
+            <div className="carousel-slider" style={{ transform: `translateX(-${index * 100}%)` }}>
+              {slides.map((slide, i) => (
+                <div key={i} className="carousel-slide">
+                  {/* Imagen a la izquierda */}
+                  {slide.img && (
+                    <img
+                      src={slide.img}
+                      alt={slide.title}
+                    />
+                  )}
+                  
+                  {/* Contenido a la derecha */}
+                  <div className="carousel-content">
+                    <h3 className="text-4xl font-bold mb-6 text-yellow-400">{slide.title}</h3>
+                    <p className="text-2xl leading-relaxed text-gray-700">{slide.text}</p>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
 
             {/* Botón Izquierdo */}
             <button
               onClick={prevSlide}
-              className="absolute left-0 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/40 p-3 rounded-full transition-all"
+              className="carousel-button absolute left-4 top-1/2 -translate-y-1/2 bg-black/20 p-4 rounded-full z-10"
             >
-              <ChevronLeft size={28} />
+              <ChevronLeft size={32} className="text-white" />
             </button>
 
             {/* Botón Derecho */}
             <button
               onClick={nextSlide}
-              className="absolute right-0 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/40 p-3 rounded-full transition-all"
+              className="carousel-button absolute right-4 top-1/2 -translate-y-1/2 bg-black/20 p-4 rounded-full z-10"
             >
-              <ChevronRight size={28} />
+              <ChevronRight size={32} className="text-white" />
             </button>
           </div>
 
           {/* Indicadores */}
-          <div className="flex justify-center mt-6 gap-3">
+          <div className="flex justify-center mt-8 gap-3">
             {slides.map((_, i) => (
               <div
                 key={i}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${index === i ? "bg-yellow-400 scale-125" : "bg-gray-300"}`}
+                onClick={() => setIndex(i)}
+                className={`carousel-indicator w-4 h-4 rounded-full ${
+                  index === i ? "bg-yellow-400 scale-125" : "bg-gray-300"
+                }`}
               ></div>
             ))}
           </div>
@@ -234,12 +244,12 @@ export const Home = () => {
       </section>
 
       {/* TESTIMONIOS */}
-      <section className="bg-gray-100 py-20 transition-colors">
+      <section className="py-20 transition-colors">
         <h2 className="text-4xl font-bold text-center mb-12">Opiniones de Nuestros Clientes</h2>
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-8 px-4">
-          <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center">
+          <div className="testimonial-card bg-white shadow-md rounded-2xl p-6 flex flex-col items-center">
             {imgError.testimage ? (
-              <div className="w-24 h-24 flex items-center justify-center bg-gray-500 rounded-full text-gray-300 text-sm">[Foto]</div>
+              <div className="image-placeholder w-24 h-24 rounded-full text-sm">[Foto]</div>
             ) : (
               <img
                 src={testimage}
@@ -255,8 +265,8 @@ export const Home = () => {
       </section>
 
       {/* DONDE ENCONTRARNOS */}
-      <section className="bg-white py-20">
-        <div className="mac-w-6xl mx-auto text-center">
+      <section className="py-20">
+        <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-8">¿Dónde encontrarnos?</h2>
           <p className="text-lg mb-6">¡Visítanos en nuestra sede principal!</p>
         </div>
@@ -272,9 +282,9 @@ export const Home = () => {
           <div>
             <h3 className="text-lg font-semibold mb-3 text-yellow-400">Enlaces</h3>
             <ul>
-              <li><a href="#" className="hover:text-white">Inicio</a></li>
-              <li><a href="#" className="hover:text-white">Servicios</a></li>
-              <li><a href="#" className="hover:text-white">Contacto</a></li>
+              <li><a href="#" className="footer-link hover:text-white">Inicio</a></li>
+              <li><a href="#" className="footer-link hover:text-white">Servicios</a></li>
+              <li><a href="#" className="footer-link hover:text-white">Contacto</a></li>
             </ul>
           </div>
           <div>
