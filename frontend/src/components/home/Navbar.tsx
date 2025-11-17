@@ -4,6 +4,7 @@ import { Button } from '../utils/Button'
 import type { ActionsType } from '../../App'
 import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../context/authContext'
+import './Navbar.css'
 
 type NavbarType = {
   appDispatch: React.Dispatch<ActionsType>
@@ -41,38 +42,38 @@ export const Navbar = ({appDispatch}: NavbarType) => {
   }
 
   return (
-    <nav className="bg-blue-900 text-white px-6 py-1 flex justify-between items-center sticky top-0 left-0 w-full z-50 shadow-md">
+    <nav className="navbar-container">
    
-      <NavLink 
-        to="/" 
-      >
-        <img src={logo} className='h-18'/>
+      <NavLink to="/">
+        <img src={logo} alt="Logo" className="navbar-logo" />
       </NavLink>
 
-      <ul className="hidden md:flex gap-6 items-center">
+      <ul className="navbar-menu">
         <li>
           <NavLink 
             to="/" 
-            className={({isActive}) => isActive ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1" : "hover:text-gray-200"}
+            className={({isActive}) => isActive ? "navbar-link navbar-link-active" : "navbar-link"}
           >
             Home
           </NavLink>
         </li>
+        
         {userInfo &&
           <li>
             <NavLink 
-            to="/services" 
-            className={({isActive}) => isActive ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1" : "hover:text-gray-200"}
+              to="/services" 
+              className={({isActive}) => isActive ? "navbar-link navbar-link-active" : "navbar-link"}
             >
               Services
             </NavLink>
           </li>
         }
-         {userInfo &&
+        
+        {userInfo &&
           <li>
             <NavLink 
               to="/dashboard" 
-              className={({isActive}) => isActive ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1" : "hover:text-gray-200"}
+              className={({isActive}) => isActive ? "navbar-link navbar-link-active" : "navbar-link"}
             >
               Mi Dashboard
             </NavLink>
@@ -80,45 +81,42 @@ export const Navbar = ({appDispatch}: NavbarType) => {
         }
 
         {userInfo && isAdmin &&
-
           <li>
             <NavLink 
               to="/admin" 
-              className={({isActive}) => isActive ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1" : "hover:text-gray-200"}
+              className={({isActive}) => isActive ? "navbar-link navbar-link-active" : "navbar-link"}
             >
               Admin
             </NavLink>
           </li>
         }
 
-
-        {
-          !isLoggedIn && <li>
+        {!isLoggedIn && 
+          <li>
             <Button 
-              className='px-4 py-1 bg-yellow-500 hover:bg-yellow-600 active:bg-blue-800 text-white font-bold rounded-md border-none' 
+              className="navbar-button" 
               onClick={toggleLogin}
             >
               Login
-
             </Button>
           </li>
         }
 
-        {
-          !isLoggedIn && <li>
+        {!isLoggedIn && 
+          <li>
             <Button 
-              className='px-4 py-1 bg-yellow-500 hover:bg-yellow-600 active:bg-blue-800 text-white font-bold rounded-md border-none' 
+              className="navbar-button" 
               onClick={toggleRegister}
             >
-                Register
+              Register
             </Button>
           </li>
         }
 
-        {
-          isLoggedIn && <li>
+        {isLoggedIn && 
+          <li>
             <Button 
-              className='px-4 py-1 bg-yellow-500 hover:bg-yellow-600 active:bg-blue-800 text-white font-bold rounded-md border-none' 
+              className="navbar-button" 
               onClick={logout}
             >
               Logout
@@ -128,7 +126,7 @@ export const Navbar = ({appDispatch}: NavbarType) => {
       </ul>
 
       {/* Botón menú móvil */}
-      <button className="md:hidden p-2 rounded hover:bg-blue-700">
+      <button className="navbar-mobile-button">
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
             d="M4 6h16M4 12h16M4 18h16" />
