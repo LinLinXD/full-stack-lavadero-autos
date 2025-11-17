@@ -24,13 +24,27 @@ class UserController {
         }
     }
 
-    async register (req, res, next) {
+    async registerNonVerifiedUser (req, res, next) {
         try{
             const userInfo = req.body;
 
-            const user = await userService.register(userInfo, salt);
+            const user = await userService.registerNonVerifiedUser(userInfo, salt);
 
             return res.status(201).json({success: true, payload: {user}});
+        } catch (err) {
+            return next(err)
+        }
+    }
+
+    async verifyUser (req, res, next) {
+        try{
+            console.log(req.body);
+
+            const {email, code} = req.body;
+
+            await userService.verifyUser(email, code);
+
+            return res.status(201).json({success: true});
         } catch (err) {
             return next(err)
         }

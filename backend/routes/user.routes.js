@@ -7,7 +7,8 @@ import userVerification from "../middlewares/userVerification.js";
 const userRouter = Router();
 const userController = new UserController();
 
-userRouter.post('/register', validate(registerUserSchema), userController.register)
+userRouter.post('/registerNonVerifiedUser', validate(registerUserSchema), userController.registerNonVerifiedUser)
+userRouter.post('/verifyUser', userController.verifyUser)
 userRouter.post('/login', validate(loginUserSchema), userController.login)
 userRouter.get('/logout', userController.logout)
 userRouter.get('/me', userVerification, userController.me)
