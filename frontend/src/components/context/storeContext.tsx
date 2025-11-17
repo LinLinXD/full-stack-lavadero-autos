@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
-// 🧩 Definimos la interfaz para cada servicio
 export interface Service {
   id: string;
   nombre: string;
@@ -13,7 +12,6 @@ export interface Service {
   url?: string;
 }
 
-// 🧩 Definimos qué contendrá el contexto global
 export interface StoreContextType {
   services: Service[];
   loading: boolean;
@@ -24,7 +22,6 @@ export interface StoreContextType {
   setCartItems: React.Dispatch<React.SetStateAction<Record<string, number>>>;
 }
 
-// 🧠 Creamos el contexto tipado
 export const StoreContext = createContext<StoreContextType | null>(null);
 
 // 🧩 Provider

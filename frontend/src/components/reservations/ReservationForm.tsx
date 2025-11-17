@@ -13,7 +13,11 @@ const ReservationForm: React.FC<ReservationFormProps> = ({ services, onClose }) 
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const today = new Date().toISOString().split("T")[0];
+  // Fecha mínima: mañana
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const minDate = tomorrow.toISOString().split("T")[0];
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -107,7 +111,7 @@ const ReservationForm: React.FC<ReservationFormProps> = ({ services, onClose }) 
             type="date"
             value={fecha}
             onChange={(e) => setFecha(e.target.value)}
-            min={today}
+            min={minDate}
             required
           />
         </label>
