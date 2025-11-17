@@ -38,14 +38,27 @@ export const Login = ({ appDispatch }: LoginType) => {
         }),
         credentials: 'include'
     })
+    
+    const userData = await loginFetch.json() 
 
     if(!loginFetch.ok){
-        console.error("Something went wrong")
-        setShowPopup(true);
-        setPopupType('error');
-        setPopupMessage('Correo o contraseña incorrecta,revise e intente de nuevo');
+      
+      switch (userData.errorType){
+        case 'not-verified':
+          setShowPopup(true);
+          setPopupType('alert');
+          setPopupMessage(userData.message);
+        break;
+        
+        case 'invalid-data': 
+          setShowPopup(true);
+          setPopupType('error');
+          setPopupMessage(userData.message);
+        break
+      }
+      
+
     } else {
-      const userData = await loginFetch.json() 
 
       appDispatch({type: 'user', payload: userData.payload})
       appDispatch({type: 'login'})
@@ -54,7 +67,6 @@ export const Login = ({ appDispatch }: LoginType) => {
       setPopupMessage('Inicio de sesión exitoso')
       setShowPopup(true)
 
-      // auto close popup and then toggle login modal after a short delay
       if (autoCloseTimer.current) clearTimeout(autoCloseTimer.current)
       autoCloseTimer.current = setTimeout(() => {
         setShowPopup(false)
