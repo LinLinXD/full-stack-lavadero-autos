@@ -47,6 +47,10 @@ async registerNonVerifiedUser (userInfo, salt) {
     async verifyUser (email, code) {
         const user = await this.userModel.findOne({email});
 
+        if(!code){
+            throw new HttpError('El código no puede estar vacío', 400, 'invalid-data')
+        }
+
         if(!user){
             throw new HttpError('Este usuario no existe', 400, 'non-existing-user')
         }
@@ -59,10 +63,10 @@ async registerNonVerifiedUser (userInfo, salt) {
             throw new HttpError('El código enviado está vencido', 400, 'expired-code');
         }
 
-        const isValid = bcrypt.compare(code, user.verificationCode)
+        const isValid = await bcrypt.compare(code, user.verificationCode)
 
         if(!isValid){
-            throw new HttpError('El codigo es incorrecto', 400, 'invalid-code')
+            throw new HttpError('El código es incorrecto', 400, 'invalid-code')
         }
 
         user.isVerified = true;
