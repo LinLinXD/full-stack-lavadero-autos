@@ -169,6 +169,12 @@ export const Register = ({appDispatch}:RegisterType) => {
           setPopupMessage(data.message);
         break
 
+        case 'invalid-data': 
+          setShowPopup(true);
+          setPopupType('error');
+          setPopupMessage(data.message);
+        break
+
         case 'invalid-code': 
           setShowPopup(true);
           setPopupType('alert');
